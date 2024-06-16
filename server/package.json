@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"migrate": "ts-node ./node_modules/node-pg-migrate/bin/node-pg-migrate.js -j ts",
+		"migrate": "node-pg-migrate",
 		"dev": "nodemon",
 		"prod": "NODE_ENV=production node ./index.js"
 	},
