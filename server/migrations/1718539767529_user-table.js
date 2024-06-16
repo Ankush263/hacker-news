@@ -16,7 +16,7 @@ exports.up = (pgm) => {
       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
       username VARCHAR(30) NOT NULL UNIQUE,
       email VARCHAR(50) NOT NULL UNIQUE,
-      password VARCHAR(50) NOT NULL CHECK (LENGTH(password) >= 8),
+      password VARCHAR(300) NOT NULL CHECK (LENGTH(password) >= 8),
       karma INTEGER NOT NULL DEFAULT 0,
       about VARCHAR(600)
     );
