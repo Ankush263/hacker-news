@@ -41,19 +41,31 @@ class UserRepo {
 		return toCamelCase(rows)[0];
 	}
 
-	static async findByIdAndUpdate(id, username, email) {
+	static async findByIdAndUpdate(id, username, email, about) {
 		const { rows } = await pool.query(
 			`
     UPDATE users
     SET
       username = COALESCE($2, username),
-      email = COALESCE($3, email)
+      email = COALESCE($3, email),
+      about = COALESCE($4, about)
     WHERE id = $1
 		RETURNING *;
     `,
-			[id, username, email]
+			[id, username, email, about]
 		);
 		return toCamelCase(rows)[0];
+	}
+
+	static async findByIdAndDelete(id) {
+		const { rows } = await pool.query(
+			`
+				DELETE FROM users
+				WHERE id = $1
+			`,
+			[id]
+		);
+		return toCamelCase(rows);
 	}
 }
 
