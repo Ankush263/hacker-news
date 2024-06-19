@@ -78,6 +78,24 @@ exports.findPostById = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.increaseScore = catchAsync(async (req, res, next) => {
+	const increaseScore = await PostRepo.increaseScore(req.params.id);
+
+	await res.status(200).json({
+		status: 'success',
+		data: increaseScore,
+	});
+});
+
+exports.decreaseScore = catchAsync(async (req, res, next) => {
+	const decreaseScore = await PostRepo.decreaseScore(req.params.id);
+
+	await res.status(200).json({
+		status: 'success',
+		data: decreaseScore,
+	});
+});
+
 exports.updatePost = catchAsync(async (req, res, next) => {
 	const { title, text, url } = req.body;
 

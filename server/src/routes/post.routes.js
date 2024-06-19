@@ -8,6 +8,8 @@ const {
 	updatePost,
 	findAllNewPosts,
 	findAllTypePosts,
+	increaseScore,
+	decreaseScore,
 } = require('../controllers/postControllers');
 
 const router = Router();
@@ -15,6 +17,9 @@ const router = Router();
 router.route('/new').get(findAllNewPosts);
 
 router.route('/type/:type').get(findAllTypePosts);
+
+router.route('/increase/:id').patch(protect, increaseScore);
+router.route('/decrease/:id').patch(protect, decreaseScore);
 
 router.route('/').post(protect, createPost).get(findAllPostsDec);
 router

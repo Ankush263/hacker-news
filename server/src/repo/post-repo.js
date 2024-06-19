@@ -74,7 +74,6 @@ class PostRepo {
 	}
 
 	static async findByIdAndUpdate(id, title, text, url) {
-		console.log(id, title, text, url);
 		const { rows } = await pool.query(
 			`
     UPDATE posts
