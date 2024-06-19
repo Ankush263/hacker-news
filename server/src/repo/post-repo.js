@@ -35,7 +35,7 @@ class PostRepo {
 
 	static async findAllNewPosts() {
 		const { rows } = await pool.query(
-			'SELECT id, created_at, by, title, text, url, score, descendants FROM posts ORDER BY created_at DESC'
+			'SELECT id, created_at, by, title, url, score, descendants FROM posts ORDER BY created_at DESC'
 		);
 		return toCamelCase(rows);
 	}
@@ -69,6 +69,23 @@ class PostRepo {
 				RETURNING *
 			`,
 			[id]
+		);
+		return toCamelCase(rows)[0];
+	}
+
+	static async findByIdAndUpdate(id, title, text, url) {
+		console.log(id, title, text, url);
+		const { rows } = await pool.query(
+			`
+    UPDATE posts
+    SET
+      title = COALESCE($2, title),
+      text = COALESCE($3, text),
+      url = COALESCE($4, url)
+    WHERE id = $1
+		RETURNING *;
+    `,
+			[id, title, text, url]
 		);
 		return toCamelCase(rows)[0];
 	}

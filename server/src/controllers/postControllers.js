@@ -2,6 +2,7 @@ const PostRepo = require('../repo/post-repo');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const UserRepo = require('../repo/user-repo');
+const CommentRepo = require('../repo/comment-repo');
 
 exports.createPost = catchAsync(async (req, res, next) => {
 	const { title, text, url } = req.body;
@@ -45,6 +46,25 @@ exports.findAllPostsDec = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.findAllNewPosts = catchAsync(async (req, res, next) => {
+	const posts = await PostRepo.findAllNewPosts();
+
+	res.status(200).json({
+		status: 'success',
+		data: posts,
+	});
+});
+
+exports.findAllTypePosts = catchAsync(async (req, res, next) => {
+	const { type } = req.params;
+	const posts = await PostRepo.findTypePosts(type);
+
+	res.status(200).json({
+		status: 'success',
+		data: posts,
+	});
+});
+
 exports.findPostById = catchAsync(async (req, res, next) => {
 	const post = await PostRepo.findById(req.params.id);
 
@@ -58,12 +78,42 @@ exports.findPostById = catchAsync(async (req, res, next) => {
 	});
 });
 
+exports.updatePost = catchAsync(async (req, res, next) => {
+	const { title, text, url } = req.body;
+
+	const post = await PostRepo.findById(req.params.id);
+
+	if (post.userId.toString() !== req.user.id.toString()) {
+		return next(new AppError('You are not the owner of this post', 404));
+	}
+
+	const user = await PostRepo.findByIdAndUpdate(
+		req.params.id,
+		title,
+		text,
+		url
+	);
+
+	res.status(200).json({
+		status: 'success',
+		data: user,
+	});
+});
+
 exports.deletePost = catchAsync(async (req, res, next) => {
 	const post = await PostRepo.findById(req.params.id);
 
 	if (post.userId.toString() !== req.user.id.toString()) {
 		return next(new AppError('You are not the owner of this post', 404));
 	}
+
+	const allComments = await CommentRepo.findByPostId(post.id);
+
+	await Promise.all(
+		allComments.map(async (comment) => {
+			await CommentRepo.findByIdAndDelete(comment.id);
+		})
+	);
 
 	await PostRepo.findByIdAndDelete(req.params.id);
 
