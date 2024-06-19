@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:8000';
+// const URL = 'http://localhost:8000';
+const URL = 'https://hacker-news-ankush263s-projects.vercel.app';
 
 const AUTH_URL = `${URL}/api/v1/auth`;
 const USER_URL = `${URL}/api/v1/user`;
