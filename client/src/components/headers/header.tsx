@@ -12,7 +12,7 @@ import { CircleUserRound } from 'lucide-react';
 import Link from 'next/link';
 import * as actions from '@/actions';
 
-function Header({ token }: any) {
+function Header({ token, username }: any) {
 	return (
 		<div className="w-[100%] h-16 bg-slate-800 flex justify-center">
 			<div className="w-[85%] h-full flex items-center justify-between gap-5">
@@ -40,7 +40,7 @@ function Header({ token }: any) {
 						<>
 							<CircleUserRound />
 							<Popover>
-								<PopoverTrigger>{'Ankush263 (2)'}</PopoverTrigger>
+								<PopoverTrigger>{username}</PopoverTrigger>
 								<PopoverContent>
 									<form action={actions.logoutMethod}>
 										<Button type="submit">Logout</Button>
