@@ -1,5 +1,13 @@
+'use server';
+
 import { cache } from 'react';
-import { getAllPostsDesc, getPostById, getTypePosts } from '@/app/api';
+import {
+	getAllPostsDesc,
+	getPostById,
+	getTypePosts,
+	increasePostScore,
+	decreasePostScore,
+} from '@/app/api';
 import { AxiosResponse } from 'axios';
 
 export type PostType = {
@@ -33,5 +41,11 @@ export const fetchAllTypePosts = cache(
 export const fetchPostById = cache(
 	(postId: string, token: string): Promise<AxiosResponse> => {
 		return getPostById(postId, token);
+	}
+);
+
+export const decreaseScore = cache(
+	(postId: string, token: string): Promise<AxiosResponse> => {
+		return decreasePostScore(postId, token);
 	}
 );
