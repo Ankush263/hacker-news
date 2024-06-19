@@ -12,6 +12,8 @@ import {
 	fetchAllTypePosts,
 } from '@/db/posts';
 import { PostType } from '@/db/posts';
+import { getToken } from '@/lib/getToken';
+import Score from './add-score';
 
 export default async function Post({ type }: { type: string }) {
 	let posts;
@@ -24,6 +26,8 @@ export default async function Post({ type }: { type: string }) {
 		posts = await fetchAllTypePosts(type);
 	}
 
+	const token = await getToken();
+
 	const renderItems = posts?.data.data.map((post: PostType, i: number) => {
 		return (
 			<div
@@ -32,9 +36,18 @@ export default async function Post({ type }: { type: string }) {
 			>
 				<div className="flex items-center">
 					<span className="text-sm mr-2">{i + 1}. </span>
-					<Triangle size={15} />
+					{token ? (
+						<Score token={token} postId={post.id.toString()} />
+					) : (
+						<Link href={`/login`}>
+							<Triangle size={15} className="cursor-pointer" />
+						</Link>
+					)}
 					<span className="text-sm ml-2">{post.score}</span>
-					<Link href={`/post/${post.id}`} className="text-sm ml-4">
+					<Link
+						href={token ? `/post/${post.id}` : '/login'}
+						className="text-sm ml-4"
+					>
 						{post.title}
 					</Link>
 				</div>
@@ -51,7 +64,10 @@ export default async function Post({ type }: { type: string }) {
 					) : (
 						<></>
 					)}
-					<Link href={`/post/${post.id}`} className="flex gap-1">
+					<Link
+						href={token ? `/post/${post.id}` : '/login'}
+						className="flex gap-1"
+					>
 						<MessageCircle size={15} />
 						<span className="text-xs">{post.descendants}</span>
 					</Link>
