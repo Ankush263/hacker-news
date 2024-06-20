@@ -16,7 +16,8 @@ import { Loader2, Terminal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import Header2 from '@/components/headers/header2';
-import { fetchPostById, PostType } from '@/db/posts';
+import { PostType } from '@/db/posts';
+import { getPostById } from '@/app/api';
 import { getToken } from '@/lib/getToken';
 import { updatePostMethod } from '@/actions';
 
@@ -53,10 +54,7 @@ function Update({ params }: PostShowPageProps) {
 		const fetchPosts = async () => {
 			try {
 				const token = await getToken();
-				const response = await fetchPostById(
-					postId,
-					token as unknown as string
-				);
+				const response = await getPostById(postId, token as unknown as string);
 
 				const post: PostType = response.data.data;
 
