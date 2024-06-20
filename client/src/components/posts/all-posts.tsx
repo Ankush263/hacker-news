@@ -1,80 +1,78 @@
-import {
-	MessageCircle,
-	SquareArrowOutUpRight,
-	Triangle,
-	User,
-} from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
-import {
-	fetchAllNewPosts,
-	fetchAllPostsDesc,
-	fetchAllTypePosts,
-} from '@/db/posts';
-import { PostType } from '@/db/posts';
-import { getToken } from '@/lib/getToken';
-import Score from './add-score';
+import PostComponent from './post';
 
-export default async function Post({ type }: { type: string }) {
-	let posts;
+export default async function Post({
+	type,
+	page,
+}: {
+	type: string;
+	page: number;
+}) {
+	const URL = 'https://hacker-news.firebaseio.com/v0';
 
-	if (type === 'new') {
-		posts = await fetchAllNewPosts();
-	} else if (type === 'desc') {
-		posts = await fetchAllPostsDesc();
-	} else {
-		posts = await fetchAllTypePosts(type);
-	}
+	let posts: any[] = [];
 
-	const token = await getToken();
+	let response;
 
-	const renderItems = posts?.data.data.map((post: PostType, i: number) => {
-		return (
-			<div
-				key={post.id}
-				className="border-gray-700 w-full h-auto border-b-2 flex flex-col md:flex-row justify-between items-start md:items-center p-2 md:p-4"
-			>
-				<div className="flex items-center mb-2 md:mb-0">
-					<span className="text-sm mr-2">{i + 1}. </span>
-					{token ? (
-						<Score token={token} postId={post.id.toString()} />
-					) : (
-						<Link href={`/login`}>
-							<Triangle size={15} className="cursor-pointer" />
-						</Link>
-					)}
-					<span className="text-sm ml-2">{post.score}</span>
-					<Link
-						href={token ? `/post/${post.id}` : '/login'}
-						className="text-sm ml-4"
-					>
-						{post.title}
-					</Link>
-				</div>
-				<div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-5">
-					<div className="flex gap-1">
-						<User size={15} />
-						<span className="text-xs">{post.by}</span>
-					</div>
-					{post.url ? (
-						<Link href={post.url} target="_blank" className="flex gap-1">
-							<SquareArrowOutUpRight size={15} />
-							<span className="text-xs truncate max-w-[200px] md:max-w-none">
-								{post.url}
-							</span>
-						</Link>
-					) : null}
-					<Link
-						href={token ? `/post/${post.id}` : '/login'}
-						className="flex gap-1"
-					>
-						<MessageCircle size={15} />
-						<span className="text-xs">{post.descendants}</span>
-					</Link>
-				</div>
-			</div>
-		);
+	response = await fetch(`${URL}/${type}.json`, {
+		cache: 'no-store',
 	});
 
-	return <div>{renderItems}</div>;
+	let totalStories = 0;
+
+	if (response.ok) {
+		const stories = await response.json();
+
+		totalStories = stories.length;
+
+		const startIndex = (page - 1) * 15;
+		const endIndex = startIndex + 15;
+
+		const paginatedStories = stories.slice(startIndex, endIndex);
+
+		const detailedStories = await Promise.all(
+			paginatedStories.map(async (storyId: number) => {
+				const storyResponse = await fetch(`${URL}/item/${storyId}.json`, {
+					cache: 'no-store',
+				});
+
+				if (storyResponse.ok) {
+					return await storyResponse.json();
+				} else {
+					console.error(
+						'Failed to fetch story details:',
+						storyResponse.status,
+						storyResponse.statusText
+					);
+					return null;
+				}
+			})
+		);
+
+		posts = detailedStories.filter((story) => story !== null);
+	} else {
+		console.error(
+			'Failed to fetch top stories:',
+			response.status,
+			response.statusText
+		);
+	}
+
+	return (
+		<div>
+			{posts.map((post: any) => {
+				return (
+					<PostComponent
+						key={post?.id}
+						id={post?.id}
+						score={post?.score}
+						title={post?.title}
+						url={post?.url}
+						by={post?.by}
+						descendants={post?.descendants}
+					/>
+				);
+			})}
+		</div>
+	);
 }

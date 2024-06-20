@@ -4,8 +4,8 @@ import PaginationControl from '@/components/posts/pagination-control';
 import { Loader2 } from 'lucide-react';
 import { Suspense } from 'react';
 
-export default async function Show({ searchParams }: any) {
-	const { page = '1', type = 'showstories' } = searchParams;
+export default async function Job({ searchParams }: any) {
+	const { page = '1', type = 'jobstories' } = searchParams;
 
 	const currentPage = parseInt(page, 10);
 

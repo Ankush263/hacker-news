@@ -1,84 +1,95 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
-	FilePenLine,
+	Loader2,
 	MessageCircle,
 	SquareArrowOutUpRight,
 	Triangle,
 } from 'lucide-react';
-import { getToken, getUserId } from '@/lib/getToken';
-import { fetchPostById } from '@/db/posts';
-import { PostType } from '@/db/posts';
 import Link from 'next/link';
 import Comment from './comments';
-import { DeletePost } from './delete-post';
+import urlFormat from '@/helper/urlFormat';
+import sanitizeHtml from 'sanitize-html';
 
 interface PostShowProps {
 	postId: string;
 }
 
 export default async function SinglePost({ postId }: PostShowProps) {
-	const token = await getToken();
-	const userId = await getUserId();
+	const URL = 'https://hacker-news.firebaseio.com/v0';
 
-	const response = await fetchPostById(postId, token as unknown as string);
+	let story;
 
-	const post: PostType = response.data.data;
+	const response = await fetch(`${URL}/item/${postId}.json`, {
+		cache: 'no-store',
+	});
+
+	if (response.ok) {
+		story = await response.json();
+	}
 
 	return (
-		<div className="flex flex-col">
+		<div className="flex flex-col mt-16 md:mt-0">
 			<div className="flex flex-col w-[100%] justify-center items-center mt-5">
 				<div className="flex flex-col w-[85%] gap-3">
 					<div className="flex gap-3 items-center">
-						<Triangle size={15} />
-						<span className="text-sm font-semibold">{post.title}</span>
+						<Triangle size={15} className="hidden md:flex" />
+						<span className="text-sm font-semibold">
+							<span
+								className="text-sm text-gray-300"
+								dangerouslySetInnerHTML={{
+									__html: sanitizeHtml(story?.title),
+								}}
+							/>
+						</span>
 					</div>
 					<div className="flex gap-3 items-center">
 						<span className="text-xs">
-							{post.score} points by {post.by}
+							{story?.score} points by {story?.by}
 						</span>
 						<div className="text-xs">|</div>
 						<div className="flex gap-1 justify-center items-center">
 							<MessageCircle size={15} />
-							<span className="text-xs">{post.descendants}</span>
+							<span className="text-xs">{story?.descendants}</span>
 						</div>
-						{post.url ? (
+						{story?.url ? (
 							<>
 								<div className="text-xs">|</div>
 								<Link
-									href={post.url}
+									href={story?.url}
 									target="_blank"
 									className="flex gap-1 justify-center items-center"
 								>
 									<SquareArrowOutUpRight size={15} />
-									<span className="text-xs">{post.url}</span>
+									<span className="text-xs">{urlFormat(story?.url)}</span>
 								</Link>
 							</>
 						) : (
 							<></>
 						)}
-						{post.userId === userId ? (
-							<>
-								<div className="text-xs">|</div>
-								<Link href={`/post/update/${postId}`}>
-									<FilePenLine size={15} />
-								</Link>
-							</>
-						) : (
-							''
-						)}
-						{post.userId === userId ? (
-							<>
-								<DeletePost postId={postId} />
-							</>
-						) : (
-							''
-						)}
 					</div>
 					<div className="mt-5">
-						<span className="text-xs text-gray-500">{post.text}</span>
+						<span className="text-xs text-gray-500">
+							<span
+								className="text-sm text-gray-300"
+								dangerouslySetInnerHTML={{
+									__html: sanitizeHtml(story?.text),
+								}}
+							/>
+						</span>
 					</div>
 
-					<Comment postId={postId} />
+					<h4>comments</h4>
+					<div className="w-[100%] border-b-2 border-gray-700 mt-7 mb-10"></div>
+
+					<Suspense
+						fallback={
+							<div className="text-white w-[100%] flex justify-center items-center mt-32 mb-32">
+								<Loader2 className="mr-2 animate-spin" size={50} />
+							</div>
+						}
+					>
+						<Comment postId={postId} />
+					</Suspense>
 				</div>
 			</div>
 		</div>
