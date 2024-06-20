@@ -32,9 +32,9 @@ export default async function Post({ type }: { type: string }) {
 		return (
 			<div
 				key={post.id}
-				className="border-gray-700 w-[100%] h-16 border-b-2 flex justify-between items-center"
+				className="border-gray-700 w-full h-auto border-b-2 flex flex-col md:flex-row justify-between items-start md:items-center p-2 md:p-4"
 			>
-				<div className="flex items-center">
+				<div className="flex items-center mb-2 md:mb-0">
 					<span className="text-sm mr-2">{i + 1}. </span>
 					{token ? (
 						<Score token={token} postId={post.id.toString()} />
@@ -51,7 +51,7 @@ export default async function Post({ type }: { type: string }) {
 						{post.title}
 					</Link>
 				</div>
-				<div className="flex items-center gap-5">
+				<div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-5">
 					<div className="flex gap-1">
 						<User size={15} />
 						<span className="text-xs">{post.by}</span>
@@ -59,11 +59,11 @@ export default async function Post({ type }: { type: string }) {
 					{post.url ? (
 						<Link href={post.url} target="_blank" className="flex gap-1">
 							<SquareArrowOutUpRight size={15} />
-							<span className="text-xs">{post.url}</span>
+							<span className="text-xs truncate max-w-[200px] md:max-w-none">
+								{post.url}
+							</span>
 						</Link>
-					) : (
-						<></>
-					)}
+					) : null}
 					<Link
 						href={token ? `/post/${post.id}` : '/login'}
 						className="flex gap-1"
