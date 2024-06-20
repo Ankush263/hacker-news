@@ -59,7 +59,7 @@ export default async function Post({
 	}
 
 	return (
-		<div>
+		<div className="mt-6">
 			{posts.map((post: any) => {
 				return (
 					<PostComponent

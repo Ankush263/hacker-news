@@ -31,7 +31,7 @@ export default function PostComponent({
 				</div>
 				<Link
 					href={`/post/${id}`}
-					className="text-xs sm:text-sm text-start mb-0 sm:ml-2"
+					className="text-sm font-semibold sm:text-sm text-start mb-0 sm:ml-2"
 				>
 					{title}
 				</Link>
