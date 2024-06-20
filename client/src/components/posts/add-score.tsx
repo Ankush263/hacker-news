@@ -1,12 +1,25 @@
 'use client';
 
-import { Triangle } from 'lucide-react';
+import { Loader2, Triangle } from 'lucide-react';
 import { AddScoreMethod } from '@/actions';
+import { useState } from 'react';
 
 export default function Score({ postId }: { token: string; postId: string }) {
-	const increase = () => {
-		AddScoreMethod(postId);
+	const [pending, setPending] = useState(false);
+
+	const increase = async () => {
+		setPending(true);
+		await AddScoreMethod(postId);
+		setPending(false);
 	};
 
-	return <Triangle size={15} className="cursor-pointer" onClick={increase} />;
+	return (
+		<>
+			{pending ? (
+				<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+			) : (
+				<Triangle size={15} className="cursor-pointer" onClick={increase} />
+			)}
+		</>
+	);
 }

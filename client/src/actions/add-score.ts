@@ -7,7 +7,7 @@ import { revalidatePath } from 'next/cache';
 export async function AddScoreMethod(postId: string) {
 	const token = cookies()?.get('Token')?.value;
 	try {
-		increasePostScore(postId, token as string);
+		await increasePostScore(postId, token as string);
 	} catch (error: any) {
 		return {
 			success: false,
