@@ -30,6 +30,77 @@ const PaginationControl = ({
 		router.push(`/?${params.toString()}`);
 	};
 
+	const renderPageLinks = () => {
+		const pageLinks = [];
+		const maxLinks = 3;
+		let startPage = currentPage - Math.floor(maxLinks / 2);
+		let endPage = currentPage + Math.floor(maxLinks / 2);
+
+		if (startPage < 1) {
+			startPage = 1;
+			endPage = Math.min(totalPages, maxLinks);
+		}
+
+		if (endPage > totalPages) {
+			endPage = totalPages;
+			startPage = Math.max(1, totalPages - maxLinks + 1);
+		}
+
+		for (let i = startPage; i <= endPage; i++) {
+			pageLinks.push(
+				<PaginationItem key={i}>
+					<PaginationLink
+						onClick={() => handlePageChange(i)}
+						isActive={i === currentPage}
+						className="cursor-pointer"
+					>
+						{i}
+					</PaginationLink>
+				</PaginationItem>
+			);
+		}
+
+		if (startPage > 1) {
+			pageLinks.unshift(
+				<PaginationItem key="ellipsis-start">
+					<PaginationEllipsis />
+				</PaginationItem>
+			);
+			pageLinks.unshift(
+				<PaginationItem key={1}>
+					<PaginationLink
+						onClick={() => handlePageChange(1)}
+						isActive={1 === currentPage}
+						className="cursor-pointer"
+					>
+						1
+					</PaginationLink>
+				</PaginationItem>
+			);
+		}
+
+		if (endPage < totalPages) {
+			pageLinks.push(
+				<PaginationItem key="ellipsis-end">
+					<PaginationEllipsis />
+				</PaginationItem>
+			);
+			pageLinks.push(
+				<PaginationItem key={totalPages}>
+					<PaginationLink
+						onClick={() => handlePageChange(totalPages)}
+						isActive={totalPages === currentPage}
+						className="cursor-pointer"
+					>
+						{totalPages}
+					</PaginationLink>
+				</PaginationItem>
+			);
+		}
+
+		return pageLinks;
+	};
+
 	return (
 		<Pagination>
 			<PaginationContent>
@@ -39,45 +110,7 @@ const PaginationControl = ({
 						onClick={() => handlePageChange(currentPage - 1)}
 					/>
 				</PaginationItem>
-
-				<PaginationItem>
-					<PaginationLink
-						onClick={() => handlePageChange(1)}
-						isActive={1 === currentPage ? true : false}
-						className="cursor-pointer"
-					>
-						1
-					</PaginationLink>
-				</PaginationItem>
-				<PaginationItem>
-					<PaginationLink
-						onClick={() => handlePageChange(2)}
-						isActive={2 === currentPage ? true : false}
-					>
-						2
-					</PaginationLink>
-				</PaginationItem>
-				<PaginationItem>
-					<PaginationLink
-						onClick={() => handlePageChange(3)}
-						isActive={3 === currentPage ? true : false}
-						className="cursor-pointer"
-					>
-						3
-					</PaginationLink>
-				</PaginationItem>
-				<PaginationItem>
-					<PaginationEllipsis />
-				</PaginationItem>
-				<PaginationItem>
-					<PaginationLink
-						onClick={() => handlePageChange(totalPages)}
-						isActive={totalPages === currentPage ? true : false}
-						className="cursor-pointer"
-					>
-						{totalPages}
-					</PaginationLink>
-				</PaginationItem>
+				{renderPageLinks()}
 				<PaginationItem>
 					<PaginationNext
 						onClick={() => handlePageChange(currentPage + 1)}
