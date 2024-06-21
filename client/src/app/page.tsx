@@ -1,6 +1,5 @@
 import Post from '@/components/posts/all-posts';
 import Header from '@/components/headers/header';
-import PaginationControl from '@/components/posts/pagination-control';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
@@ -30,10 +29,6 @@ export default function Home({
 					<Post type={type} page={currentPage} />
 				</div>
 			</Suspense>
-
-			<div className="mb-10">
-				<PaginationControl type={type} currentPage={currentPage} />
-			</div>
 		</div>
 	);
 }

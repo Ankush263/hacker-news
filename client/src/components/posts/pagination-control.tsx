@@ -14,14 +14,16 @@ import {
 const PaginationControl = ({
 	type,
 	currentPage,
+	total,
 }: {
 	type: string;
 	currentPage: number;
+	total: number;
 }) => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
-	const totalPages = 25;
+	const totalPages = Math.floor(total / 15) + 1;
 
 	const handlePageChange = (newPage: number) => {
 		const params = new URLSearchParams(searchParams.toString());

@@ -1,6 +1,5 @@
 import Header from '@/components/headers/header';
 import Post from '@/components/posts/all-posts';
-import PaginationControl from '@/components/posts/pagination-control';
 import { Loader2 } from 'lucide-react';
 import { Suspense } from 'react';
 
@@ -30,10 +29,6 @@ export default async function Ask({
 					<Post type={type} page={currentPage} />
 				</div>
 			</Suspense>
-
-			<div className="mb-10">
-				<PaginationControl type={type} currentPage={currentPage} />
-			</div>
 		</div>
 	);
 }

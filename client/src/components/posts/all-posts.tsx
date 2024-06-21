@@ -1,6 +1,7 @@
 import React from 'react';
 import PostComponent from './post';
 import { ItemInterface } from '@/types';
+import PaginationControl from './pagination-control';
 
 export default async function Post({
 	type,
@@ -74,6 +75,13 @@ export default async function Post({
 					/>
 				);
 			})}
+			<div className="mt-10">
+				<PaginationControl
+					type={type}
+					currentPage={page}
+					total={totalStories}
+				/>
+			</div>
 		</div>
 	);
 }
