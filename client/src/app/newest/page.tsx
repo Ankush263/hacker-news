@@ -4,7 +4,11 @@ import PaginationControl from '@/components/posts/pagination-control';
 import { Loader2 } from 'lucide-react';
 import { Suspense } from 'react';
 
-export default async function New({ searchParams }: any) {
+export default async function New({
+	searchParams,
+}: {
+	searchParams: { page: string; type: string };
+}) {
 	const { page = '1', type = 'newstories' } = searchParams;
 
 	const currentPage = parseInt(page, 10);

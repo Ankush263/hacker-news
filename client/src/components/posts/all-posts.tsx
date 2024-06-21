@@ -1,5 +1,6 @@
 import React from 'react';
 import PostComponent from './post';
+import { ItemInterface } from '@/types';
 
 export default async function Post({
 	type,
@@ -10,7 +11,7 @@ export default async function Post({
 }) {
 	const URL = 'https://hacker-news.firebaseio.com/v0';
 
-	let posts: any[] = [];
+	let posts: ItemInterface[] = [];
 
 	let response;
 
@@ -60,7 +61,7 @@ export default async function Post({
 
 	return (
 		<div className="mt-6">
-			{posts.map((post: any) => {
+			{posts.map((post: ItemInterface) => {
 				return (
 					<PostComponent
 						key={post?.id}

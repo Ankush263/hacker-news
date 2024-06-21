@@ -4,7 +4,11 @@ import PaginationControl from '@/components/posts/pagination-control';
 import { Suspense } from 'react';
 import { Loader2 } from 'lucide-react';
 
-export default function Home({ searchParams }: any) {
+export default function Home({
+	searchParams,
+}: {
+	searchParams: { page: string; type: string };
+}) {
 	const { page = '1', type = 'topstories' } = searchParams;
 
 	const currentPage = parseInt(page, 10);

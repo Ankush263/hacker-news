@@ -11,15 +11,21 @@ import {
 	PaginationPrevious,
 } from '@/components/ui/pagination';
 
-const PaginationControl = ({ type, currentPage }: any) => {
+const PaginationControl = ({
+	type,
+	currentPage,
+}: {
+	type: string;
+	currentPage: number;
+}) => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 
 	const totalPages = 25;
 
-	const handlePageChange = (newPage: any) => {
+	const handlePageChange = (newPage: number) => {
 		const params = new URLSearchParams(searchParams.toString());
-		params.set('page', newPage);
+		params.set('page', newPage.toString());
 		params.set('type', type);
 		router.push(`/?${params.toString()}`);
 	};

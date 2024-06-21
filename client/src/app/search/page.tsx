@@ -1,7 +1,12 @@
 import Header from '@/components/headers/header';
 import PostComponent from '@/components/posts/post';
+import { ListItemInterface } from '@/types';
 
-export default async function Search({ searchParams }: any) {
+export default async function Search({
+	searchParams,
+}: {
+	searchParams: { search: string };
+}) {
 	const { search } = searchParams;
 
 	const URL = 'https://hn.algolia.com/api/v1';
@@ -22,7 +27,7 @@ export default async function Search({ searchParams }: any) {
 			</div>
 
 			<div className="w-[85%] mt-20 mb-10">
-				{posts?.hits.map((post: any) => {
+				{posts?.hits.map((post: ListItemInterface) => {
 					return (
 						<PostComponent
 							key={post?.id}

@@ -2,7 +2,9 @@ import { ChevronRight } from 'lucide-react';
 import React from 'react';
 import sanitizeHtml from 'sanitize-html';
 import Time from '@/helper/time';
+import { CommentInterface } from '@/types';
 
+// Recursive Function
 async function fetchComment(commentId: number) {
 	const URL = 'https://hacker-news.firebaseio.com/v0';
 	const response = await fetch(`${URL}/item/${commentId}.json`, {
@@ -57,7 +59,7 @@ export default async function Comment({ postId }: { postId: string }) {
 		comment,
 		depth,
 	}: {
-		comment: any;
+		comment: CommentInterface;
 		depth: number;
 	}) => {
 		return (
@@ -85,7 +87,7 @@ export default async function Comment({ postId }: { postId: string }) {
 
 						{comment.kids && comment.kids.length > 0 && (
 							<div className="w-full mt-5">
-								{comment.kids.map((childComment: any) => (
+								{comment.kids.map((childComment: CommentInterface) => (
 									<RenderComment
 										key={childComment.id}
 										comment={childComment}
