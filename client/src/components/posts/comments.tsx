@@ -64,10 +64,10 @@ export default async function Comment({ postId }: { postId: string }) {
 	}) => {
 		return (
 			<>
-				{!comment.dead ? (
+				{!comment.dead || !comment.deleted ? (
 					<div
-						className="flex flex-col gap-2 items-start mb-5"
-						style={{ paddingLeft: `${depth * 10}px`, width: '100%' }}
+						className="flex flex-col gap-2 items-start mb-5 "
+						style={{ paddingLeft: `${depth * 3}px`, width: '100%' }}
 					>
 						<div className="flex gap-2 items-start w-full">
 							<span className="text-sm text-gray-400">
