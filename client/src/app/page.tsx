@@ -13,8 +13,8 @@ export default function Home({
 	const currentPage = parseInt(page, 10);
 
 	return (
-		<div className="flex w-[100%] flex-col items-center">
-			<div className="w-full fixed top-0 z-10">
+		<div className="flex w-[100%] flex-col items-center box-content overflow-hidden">
+			<div className="w-[100%] fixed top-0 z-10">
 				<Header />
 			</div>
 

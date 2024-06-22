@@ -36,7 +36,7 @@ export default function PostComponent({
 					{title}
 				</Link>
 			</div>
-			<div className="flex flex-row md:flex-row items-start md:items-center gap-2 md:gap-5">
+			<div className="flex flex-row md:flex-row items-start md:items-center gap-2 md:gap-5 flex-wrap md:flex-nowrap">
 				<div className="flex gap-0 sm:hidden">
 					<Triangle size={15} className="cursor-pointer" />
 					<span className="text-xs ml-2">{score}</span>

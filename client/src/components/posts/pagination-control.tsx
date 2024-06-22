@@ -34,7 +34,7 @@ const PaginationControl = ({
 
 	const renderPageLinks = () => {
 		const pageLinks = [];
-		const maxLinks = 3;
+		const maxLinks = 2;
 		let startPage = currentPage - Math.floor(maxLinks / 2);
 		let endPage = currentPage + Math.floor(maxLinks / 2);
 
@@ -104,7 +104,7 @@ const PaginationControl = ({
 	};
 
 	return (
-		<Pagination>
+		<Pagination className="w-[100%] flex justify-center items-center">
 			<PaginationContent>
 				<PaginationItem>
 					<PaginationPrevious
