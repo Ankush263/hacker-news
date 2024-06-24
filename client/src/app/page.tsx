@@ -1,7 +1,6 @@
 import Post from '@/components/posts/all-posts';
-import Header from '@/components/headers/header';
 import { Suspense } from 'react';
-import { Loader2 } from 'lucide-react';
+import Loading from './Loading';
 
 export default function Home({
 	searchParams,
@@ -14,14 +13,10 @@ export default function Home({
 
 	return (
 		<div className="flex w-[100%] flex-col items-center box-content overflow-hidden">
-			<div className="w-[100%] fixed top-0 z-10">
-				<Header />
-			</div>
-
 			<Suspense
 				fallback={
 					<div className="text-white mt-32 mb-32">
-						<Loader2 className="mr-2 animate-spin" size={50} />
+						<Loading />
 					</div>
 				}
 			>

@@ -1,10 +1,6 @@
 import React, { Suspense } from 'react';
-import {
-	Loader2,
-	MessageCircle,
-	SquareArrowOutUpRight,
-	Triangle,
-} from 'lucide-react';
+import { MessageCircle, SquareArrowOutUpRight, Triangle } from 'lucide-react';
+import Loading from '@/app/Loading';
 import Link from 'next/link';
 import Comment from './comments';
 import urlFormat from '@/helper/urlFormat';
@@ -84,7 +80,7 @@ export default async function SinglePost({ postId }: PostShowProps) {
 					<Suspense
 						fallback={
 							<div className="text-white w-[100%] flex justify-center items-center mt-32 mb-32">
-								<Loader2 className="mr-2 animate-spin" size={50} />
+								<Loading />
 							</div>
 						}
 					>

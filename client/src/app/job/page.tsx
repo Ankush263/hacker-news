@@ -1,6 +1,5 @@
-import Header from '@/components/headers/header';
 import Post from '@/components/posts/all-posts';
-import { Loader2 } from 'lucide-react';
+import Loading from '../Loading';
 import { Suspense } from 'react';
 
 export default async function Job({
@@ -14,14 +13,10 @@ export default async function Job({
 
 	return (
 		<div className="flex w-[100%] flex-col items-center">
-			<div className="w-full fixed top-0 z-10">
-				<Header />
-			</div>
-
 			<Suspense
 				fallback={
 					<div className="text-white mt-32 mb-32">
-						<Loader2 className="mr-2 animate-spin" size={50} />
+						<Loading />
 					</div>
 				}
 			>
