@@ -6,16 +6,22 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '../ui/button';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 function Header() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
+	const pathname = usePathname();
 	const [searchValue, setSearchValue] = useState('');
 
 	const handleSubmit = () => {
 		const params = new URLSearchParams(searchParams.toString());
 		params.set('search', searchValue);
 		router.push(`/search?${params.toString()}`);
+	};
+
+	const styles = {
+		activeLink: `font-semibold underline`,
 	};
 
 	return (
@@ -31,16 +37,28 @@ function Header() {
 							height={50}
 						/>
 					</Link>
-					<Link href={`/newest`}>
+					<Link
+						href={`/newest`}
+						className={pathname === '/newest' ? styles.activeLink : ''}
+					>
 						<div>New</div>
 					</Link>
-					<Link href={`/show`}>
+					<Link
+						href={`/show`}
+						className={pathname === '/show' ? styles.activeLink : ''}
+					>
 						<div>Show</div>
 					</Link>
-					<Link href={`/ask`}>
+					<Link
+						href={`/ask`}
+						className={pathname === '/ask' ? styles.activeLink : ''}
+					>
 						<div>Ask</div>
 					</Link>
-					<Link href={`/job`}>
+					<Link
+						href={`/job`}
+						className={pathname === '/job' ? styles.activeLink : ''}
+					>
 						<div>Job</div>
 					</Link>
 				</div>
