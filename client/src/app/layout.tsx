@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import Header from '@/components/headers/header';
+import Loading from './Loading';
+import { Suspense } from 'react';
 import './globals.css';
 
 const fontSans = FontSans({
@@ -27,9 +29,11 @@ export default function RootLayout({
 					fontSans.variable
 				)}
 			>
-				<nav className="w-[100%] fixed top-0 z-10">
-					<Header />
-				</nav>
+				<Suspense fallback={<Loading />}>
+					<nav className="w-[100%] fixed top-0 z-10">
+						<Header />
+					</nav>
+				</Suspense>
 				{children}
 			</body>
 		</html>
