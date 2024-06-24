@@ -1,4 +1,3 @@
-import Header from '@/components/headers/header';
 import PostComponent from '@/components/posts/post';
 import { ListItemInterface } from '@/types';
 
@@ -22,10 +21,6 @@ export default async function Search({
 
 	return (
 		<div className="flex w-[100%] flex-col items-center">
-			<div className="w-full fixed top-0 z-10">
-				<Header />
-			</div>
-
 			<div className="w-[85%] mt-20 mb-10">
 				{posts?.hits.map((post: ListItemInterface) => {
 					return (
